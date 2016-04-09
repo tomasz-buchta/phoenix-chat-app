@@ -17,7 +17,7 @@ defmodule ChatApp.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/messages", MessageController
+    get "/messages", MessageController, :index
   end
 
   # Other scopes may use custom stacks.
