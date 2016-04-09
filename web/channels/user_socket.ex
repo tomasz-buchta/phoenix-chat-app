@@ -1,6 +1,7 @@
 defmodule ChatApp.UserSocket do
   use Phoenix.Socket
 
+  channel "rooms:*", ChatApp.RoomChannel
   ## Channels
   # channel "rooms:*", ChatApp.RoomChannel
 
