@@ -20,8 +20,10 @@ defmodule ChatApp.RoomChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (rooms:lobby).
   def handle_in("shout", payload, socket) do
+    changeset = Message.changeset(%Message{},payload)
+    Repo.insert(changeset)
     broadcast socket, "shout", payload
-    {:noreply, socket}
+    {:reply, :ok, socket}
   end
 
   # This is invoked every time a notification is being broadcast

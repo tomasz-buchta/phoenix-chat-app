@@ -1,7 +1,9 @@
 defmodule ChatApp.RoomChannelTest do
   use ChatApp.ChannelCase
+  import Ecto.Query
 
   alias ChatApp.RoomChannel
+  alias ChatApp.Message
 
   setup do
     {:ok, _, socket} =
@@ -12,13 +14,19 @@ defmodule ChatApp.RoomChannelTest do
   end
 
   test "ping replies with status ok", %{socket: socket} do
-    ref = push socket, "ping", %{"hello" => "there"}
-    assert_reply ref, :ok, %{"hello" => "there"}
+    ref = push socket, "ping", %{"content" => "sample content"}
+    assert_reply ref, :ok, %{"content" => "sample content"}
   end
 
   test "shout broadcasts to rooms:lobby", %{socket: socket} do
-    push socket, "shout", %{"hello" => "all"}
-    assert_broadcast "shout", %{"hello" => "all"}
+    push socket, "shout", %{"content" => "sample content"}
+    assert_broadcast "shout", %{"content" => "sample content"}
+  end
+
+  test "shout saves the message", %{socket: socket} do
+    ref = push socket, "shout", %{content: "sample content"}
+    assert_reply ref, :ok
+    assert Repo.get_by(Message, content: "sample content")
   end
 
   test "broadcasts are pushed to the client", %{socket: socket} do
