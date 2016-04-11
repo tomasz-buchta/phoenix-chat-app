@@ -27,3 +27,10 @@ import_config "#{Mix.env}.exs"
 config :phoenix, :generators,
   migration: true,
   binary_id: false
+
+config :guardian, Guardian,
+  issuer: "ChatApp",
+  ttl: { 3, :days },
+  verify_issuer: true,
+  secret_key: "asdfasf43f434f43f34",
+  serializer: PhoenixTrello.GuardianSerializer
