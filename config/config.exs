@@ -27,3 +27,11 @@ import_config "#{Mix.env}.exs"
 config :phoenix, :generators,
   migration: true,
   binary_id: false
+
+config :addict,
+  secret_key: "2432622431322435734539694b4866597149736a41766d3335506f3665",
+  extra_validation: fn ({valid, errors}, user_params) -> {valid, errors} end, # define extra validation here
+  user_schema: ChatApp.User,
+  repo: ChatApp.Repo,
+  from_email: "no-reply@example.com", # CHANGE THIS
+mail_service: nil
