@@ -20,7 +20,6 @@ defmodule ChatApp.UserController do
 
     case Repo.insert(changeset) do
       {:ok, user} ->
-        {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
         conn
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :index))
