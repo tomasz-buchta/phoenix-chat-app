@@ -30,6 +30,18 @@ defmodule ChatApp.User do
     |> generate_encrypted_password
   end
 
+  def login_changeset(model), do: model |> cast(%{}, ~w(), ~w(email password))
+
+  def login_changeset(model, params) do
+    model
+    |> cast(params, ~w(email password), ~w())
+    |> validate_password
+  end
+
+  defp validate_password(_model) do
+    true
+  end
+
   defp generate_encrypted_password(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: password}} ->

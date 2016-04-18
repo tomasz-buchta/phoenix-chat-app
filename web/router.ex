@@ -9,12 +9,22 @@ defmodule ChatApp.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :browser_session do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", ChatApp do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :browser_session]
+
+    get "/login", SessionController, :new, as: :login
+    post "/login", SessionController, :create, as: :login
+    delete "/logout", SessionController, :delete, as: :logout
+    get "/logout", SessionController, :delete, as: :logout
 
     get "/", PageController, :index
     resources "/users", UserController
